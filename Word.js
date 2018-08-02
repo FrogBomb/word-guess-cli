@@ -21,14 +21,23 @@ function Word() {
             arrayOfStringValues.push(this.wordArray[i].underlyingCharacter());
         }
         this.stringifiedArray = arrayOfStringValues.join("");
-        console.log(this.stringifiedArray);
+        console.log("ROGER DODGER The word is:" + this.stringifiedArray);
+    }
+    this.showWholeWord = function() {
+        var arrayForWord = [];
+        for (var i = 0; i < this.wordArray.length; i++) {
+            arrayForWord.push(this.wordArray[i].stringValue);
+        }
+        var theWholeWord = arrayForWord.join("");
+        return theWholeWord;
     }
     this.guessLetter = function(character) {
-        console.log("guessLetter has been called");
+        // console.log("guessLetter has been called");
         for (var i = 0; i < this.wordArray.length; i++) {
             this.wordArray[i].updateBoolean(character);
         }
-        console.log(this.arrayToString());
+        this.arrayToString();
+        // console.log("RANGER DANGER The word is: " + this.arrayToString());
         // console.log(this.wordArray);
     }
 };
@@ -37,7 +46,7 @@ function Word() {
 
 // beetles.makeArray("beetles");
 
-// // beetles.arrayToString();
+// beetles.arrayToString();
 
 // beetles.guessLetter("z");
 
@@ -50,5 +59,6 @@ function Word() {
 // beetles.guessLetter("s");
 
 // beetles.guessLetter("e");
+
 
 module.exports = Word;

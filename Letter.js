@@ -42,23 +42,23 @@ function testForLetter(character) {
 // argument through the testForLetter function. 
 
 Letter.prototype.updateBoolean = function(character) {
-    console.log("function updateBoolean has started");
+    // console.log("function updateBoolean has started");
         if ((character.toLowerCase() === this.stringValue.toLowerCase()) && (this.hasLetterBeenGuessedYet === true)) {
-            console.log("argument equals string value, and boolean value is true. Letter has already been guessed");
+            // console.log("argument equals string value, and boolean value is true. Letter has already been guessed");
             this.hasLetterBeenGuessedYet = true;
-            console.log(this);
+            // console.log(this);
         } else if ((character.toLowerCase() !== this.stringValue.toLowerCase()) && (this.hasLetterBeenGuessedYet === true)) {
-            console.log("argument does not equal string value, but boolean value is true. Letter has already been guessed");
+            // console.log("argument does not equal string value, but boolean value is true. Letter has already been guessed");
             this.hasLetterBeenGuessedYet = true;
-            console.log(this);
+            // console.log(this);
         } else if ((character.toLowerCase() === this.stringValue.toLowerCase()) && (this.hasLetterBeenGuessedYet === false)) {
-            console.log("argument equals string value, but boolean value is false. Letter has been guessed");
+            // console.log("argument equals string value, but boolean value is false. Letter has been guessed");
             this.hasLetterBeenGuessedYet = true;
-            console.log(this);
+            // console.log(this);
         } else if ((character.toLowerCase() !== this.stringValue.toLowerCase()) && (this.hasLetterBeenGuessedYet === false)) {
-            console.log("argument does not equal string value, and boolean value is false. Letter has NOT been guessed");
+            // console.log("argument does not equal string value, and boolean value is false. Letter has NOT been guessed");
             this.hasLetterBeenGuessedYet = false;
-            console.log(this);
+            // console.log(this);
         }
         this.underlyingCharacter();
 };

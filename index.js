@@ -4,70 +4,112 @@ var inquirer = require('inquirer');
 
 var counter = 16;
 
-emitter.setMaxListeners(100);
-
-var possibleWords = [
-"else",  	
-"instanceof",  	
-"super",  
-"enum",  	
-"int", 	
-"switch",  
-"export",  	
-"interface",	
-"synchronized",  
-"extends",  	
-"let",  	
-"this",  
-"false",  	
-"long",  	
-"throw",  
-"final",  	
-"native",  
-"throws",  
-"finally",  	
-"new",  	
-"transient",  
-"float",  	
-"null", 
-"true",  
-"for", 	
-"package",  	
-"try",  
-"function",  	
-"private",  	
-"typeof",  
-"debugger",  	
-"goto",  	
-"protected",  	
-"var",  
-"default",  	
-"if",  	
-"public",  	
-"void",  
-"delete",  	
-"implements",  	
-"return",  	
-"volatile",  
-"do",  	
-"import",  	
-"short",  	
-"while",
-"double",  	
-"in",  	
-"static",  	
-"with", 
-"abstract",
-"boolean",
-"break",
-"byte",
-"case",
-"catch",
-"char",
+const possibleWords = [
+"abstract", 
+"boolean", 
+"break", 
+"byte", 
+"case", 
+"catch", 
+"char", 
 "class",
-"const",
-"continue"
+"const", 
+"continue", 
+"debugger", 
+"default", 
+"delete", 
+"do", 
+"double", 
+"else", 
+"enum", 
+"export", 
+"extends", 
+"false", 
+"final", 
+"finally", 
+"float", 
+"for", 
+"function", 
+"goto", 
+"if", 
+"implements", 
+"import", 
+"in", 
+"instanceof", 
+"int", 
+"interface", 
+"let", 
+"long", 
+"native", 
+"new", 
+"null", 
+"package", 
+"private", 
+"protected", 
+"public", 
+"return", 
+"short", 
+"static", 
+"super", 
+"switch", 
+"synchronized", 
+"this", 
+"throw", 
+"throws", 
+"transient", 
+"true", 
+"try", 
+"typeof", 
+"var", 
+"void", 
+"volatile", 
+"while", 
+"with"
 ];
+
+function showWordArray() {
+    var allTheWords = possibleWords.join("     ");
+    console.log(allTheWords);
+}
+
+const funFactsArray = [
+"'The human brain weighs six pounds!' This fun fact is from the 1996 film Jerry Maguire, released the same year as the first ECMAScript specification.",
+"JavaScript and Java originally had the same set of reserved words. This is one of the few things the two languages share.",
+"The language COBOL has over 300 reserved words."
+];
+
+function randomFact() {
+    console.log("FUN FACT: " + funFactsArray[Math.floor(Math.random() * funFactsArray.length + 1)]);
+};
+
+function playAgain() {
+    inquirer.prompt([
+        {
+            name: "yesOrNo",
+            message: "Play again? y/n: "
+        }
+    ]).then(function(answers) {
+        if (answers.yesOrNo === "y") {
+            gameSetup();
+        } else if (answers.yesOrNo === "n") {
+            
+        } else if ((answers.yesOrNo !== "y") && (answers.yesOrNo !== "n")) {
+            console.log("Please enter 'y' or 'n'.");
+            playAgain();
+        }
+    });
+};
+
+function gameOver() {
+    console.log("======================");
+    // console.log("The word was " + theWord.stringifiedArray);
+    console.log("You have no remaining guesses.");
+    console.log("The word was: " + theWord.showWholeWord());
+    console.log("GAME OVER");
+    randomFact();
+    console.log("======================");
+    playAgain();
+};
 
 var theWord;
 
@@ -100,14 +142,30 @@ function instructions() {
     console.log("* When you are ready to begin, use command 'node index.js begin'");
     console.log("* To guess a letter in the game, type '*letter*'");
     console.log("* To quit the game at any time, type Ctrl + c or Command + c");
-    // console.log("* For a list of commands, type 'node index.js commands'");
+    console.log("* For a list of commands, type 'node index.js commands'");
     console.log("* To repeat these instructions, use command 'node index.js instructions'");
+    console.log("======================");
+}
+
+function commands() {
+    console.log("======================");
+    console.log("COMMANDS:");
+    console.log("");
+    console.log("Access these commands when launching the game with node.");
+    console.log("");
+    console.log("* BEGIN A GAME: 'node index.js begin'");
+    console.log("* COMMANDS: 'node index.js commands'");
+    console.log("* QUIT: Ctrl + c or Command + c");
+    console.log("* INSTRUCTIONS: 'node index.js instructions'");
+    console.log("* FUN FACTS: 'node index.js fun-facts'");
+    console.log("* SHOW WORDS: 'node index.js show-words");
     console.log("======================");
 }
 
 function runGame() {
     if (counter > 0) {
         console.log("Guesses left: " + counter);
+        // console.log("The word is:" + theWord.stringifiedArray);
         inquirer.prompt([
             {
                 name: "guess",
@@ -120,23 +178,38 @@ function runGame() {
             for (var i = 0; i < theWord.wordArray.length; i++) {
                 if (theWord.wordArray[i].hasLetterBeenGuessedYet === true) {
                     lettersLeftToGuess--;
-                    if (lettersLeftToGuess > 0) {
-                        runGame();
-                    } else if (lettersLeftToGuess === 0) {
-                        console.log("======================");
-                        console.log("YOU WON!");
-                        console.log("You correctly guessed the reserve word.");
-                        console.log("======================");
-                    }
                 }
+            }
+            if (theWord.stringifiedArray.includes(answers.guess) === true) {
+
+            } else if (theWord.stringifiedArray.includes(answers.guess) === false) {
+                console.log("Sorry, the word does NOT include that letter");
+                counter--;
+            }
+            if (lettersLeftToGuess > 0) {
+                // console.log("Guesses left: " + counter);
+                runGame();
+            } else if (lettersLeftToGuess === 0) {
+                console.log("======================");
+                console.log("YOU WON! The word was: " + theWord.showWholeWord());
+                // console.log("The word is: " + theWord.stringifiedArray);
+                console.log("You correctly guessed the reserved word.");
+                randomFact();
+                console.log("======================");
+                playAgain();
             }
         });
     } else {
-        console.log("======================");
-        console.log("You have no remaining guesses.");
-        console.log("GAME OVER");
-        console.log("======================");
+        gameOver();
     }
+};
+
+function gameSetup() {
+    chooseAWord(possibleWords);
+    counter = 16;
+    // console.log("The word is: " + theWord.wordArray);
+    console.log("A " + theWord.wordArray.length + "-letter JavaScript reserved word. Good luck!");
+    runGame();
 };
 
 function gameLogic(input) {
@@ -144,10 +217,17 @@ function gameLogic(input) {
         gameIntro();
     } else if (input === "instructions") {
         instructions();
+    } else if (input === "commands") {
+        commands();
+    } else if (input === "fun-facts") {
+        randomFact();
+    } else if (input === "show-words") {
+        showWordArray();
     } else if (input === "begin") {
-        chooseAWord(possibleWords);
-        console.log("A " + theWord.wordArray.length + "-letter JavaScript reserved word. Good luck!");
-        runGame();
+        gameSetup();
+    } else {
+        console.log("Not a valid command.");
+        commands();
     }
 };
 
