@@ -4,6 +4,12 @@ var inquirer = require('inquirer');
 
 var counter = 16;
 
+var winCounter = 0;
+
+var lossCounter = 0;
+
+var theWord;
+
 const possibleWords = [
 "abstract", 
 "boolean", 
@@ -92,7 +98,7 @@ function playAgain() {
         if (answers.yesOrNo === "y") {
             gameSetup();
         } else if (answers.yesOrNo === "n") {
-            
+            gameIntro();
         } else if ((answers.yesOrNo !== "y") && (answers.yesOrNo !== "n")) {
             console.log("Please enter 'y' or 'n'.");
             playAgain();
@@ -107,11 +113,10 @@ function gameOver() {
     console.log("The word was: " + theWord.showWholeWord());
     console.log("GAME OVER");
     randomFact();
+    winLossIncrement("loss");
     console.log("======================");
     playAgain();
 };
-
-var theWord;
 
 function chooseAWord(possibleWords) {
     var chosenWord = possibleWords[Math.floor(Math.random() * possibleWords.length)];
@@ -134,18 +139,27 @@ function intro() {
     console.log("JavaScript has 63 reserved words.")
 }
 
+function stats() {
+    console.log("======================");
+    console.log("**STATS**");
+    console.log("Wins: " + winCounter);
+    console.log("Losses: " + lossCounter);
+    console.log("======================");
+};
+
 function instructions() {
     console.log("======================");
     console.log("INSTRUCTIONS:");
+    console.log("");
+    console.log("* TO BEGIN, USE COMMAND 'node index.js begin'");
     console.log("- Try to guess the word by typing one letter at a time.");
     console.log("- You get 16 incorrect guesses per round.");
-    console.log("* When you are ready to begin, use command 'node index.js begin'");
     console.log("* To guess a letter in the game, type '*letter*'");
     console.log("* To quit the game at any time, type Ctrl + c or Command + c");
     console.log("* For a list of commands, type 'node index.js commands'");
     console.log("* To repeat these instructions, use command 'node index.js instructions'");
     console.log("======================");
-}
+};
 
 function commands() {
     console.log("======================");
@@ -190,19 +204,34 @@ function runGame() {
                 // console.log("Guesses left: " + counter);
                 runGame();
             } else if (lettersLeftToGuess === 0) {
-                console.log("======================");
-                console.log("YOU WON! The word was: " + theWord.showWholeWord());
-                // console.log("The word is: " + theWord.stringifiedArray);
-                console.log("You correctly guessed the reserved word.");
-                randomFact();
-                console.log("======================");
-                playAgain();
+                youWon();
             }
         });
     } else {
         gameOver();
     }
 };
+
+function youWon() {
+    console.log("======================");
+    console.log("YOU WON! The word was: " + theWord.showWholeWord());
+    // console.log("The word is: " + theWord.stringifiedArray);
+    console.log("You correctly guessed the reserved word.");
+    randomFact();
+    console.log("======================");
+    winLossIncrement("win");
+    playAgain();
+};
+
+function winLossIncrement(winOrLoss) {
+    if (winOrLoss = "win") {
+        winCounter++;  
+    } else if (winOrLoss === "loss") {
+        lossCounter++;
+    }
+    console.log("Wins: " + winCounter);
+    console.log("Losses: " + lossCounter);
+}
 
 function gameSetup() {
     chooseAWord(possibleWords);
@@ -225,6 +254,8 @@ function gameLogic(input) {
         showWordArray();
     } else if (input === "begin") {
         gameSetup();
+    } else if (input === "stats") {
+        stats();
     } else {
         console.log("Not a valid command.");
         commands();

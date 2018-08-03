@@ -21,7 +21,7 @@ function Word() {
             arrayOfStringValues.push(this.wordArray[i].underlyingCharacter());
         }
         this.stringifiedArray = arrayOfStringValues.join("");
-        console.log("ROGER DODGER The word is:" + this.stringifiedArray);
+        console.log("The word is:" + this.stringifiedArray);
     }
     this.showWholeWord = function() {
         var arrayForWord = [];
